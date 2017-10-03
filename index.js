@@ -268,7 +268,36 @@ var BaseEntity = /** @class */ (function () {
     /** Fetch a row from the database and place it in the entities row object.
      ** If you leave the column blank it will use the description column;
      */
-    BaseEntity.prototype.fetchRowByColumn = function (value, column, option) {
+    BaseEntity.prototype.fetchRowByColumn = function (value, column) {
+        var me = this;
+        if (!column)
+            column = me.descriptionColumn;
+        return new Promise(function (resolve, reject) {
+            if (!value || value == undefined) {
+                me.row = {};
+                resolve(me.row);
+                return;
+            }
+            me.open().then(function () {
+                var sql;
+                value = "'" + value.replace(/'/g, "''") + "'";
+                sql = "select " + me.primaryKeyColumn + ", * from " + me.table + " where " + column + " = " + value;
+                return me.sqlite.fetch(sql);
+            }).then(function (data) {
+                me.row = data || {};
+                resolve(me.row);
+            }).catch(function (err) {
+                var error = new Error("Error fetching row where (" + column + " = " + value + ") from " + me.table + ". " + err);
+                alert(error.message);
+                reject(error);
+            });
+        });
+    };
+    ;
+    /** Fetch a row from the database and place it in the entities row object.
+ ** If you leave the column blank it will use the description column;
+ */
+    BaseEntity.prototype.fetchRowByStringColumn = function (value, column, option) {
         var me = this;
         if (!column)
             column = me.descriptionColumn;
@@ -291,6 +320,43 @@ var BaseEntity = /** @class */ (function () {
                         break;
                     default:
                         value = "'" + value.replace(/'/g, "''") + "'";
+                        sql = "select " + me.primaryKeyColumn + ", * from " + me.table + " where " + column + " = " + value;
+                }
+                return me.sqlite.fetch(sql);
+            }).then(function (data) {
+                me.row = data || {};
+                resolve(me.row);
+            }).catch(function (err) {
+                var error = new Error("Error fetching row where (" + column + " = " + value + ") from " + me.table + ". " + err);
+                alert(error.message);
+                reject(error);
+            });
+        });
+    };
+    ;
+    /** Fetch a row from the database and place it in the entities row object.
+     ** If you leave the column blank it will use the description column;
+     */
+    BaseEntity.prototype.fetchRowByNumberColumn = function (value, column, option) {
+        var me = this;
+        if (!column)
+            column = me.descriptionColumn;
+        return new Promise(function (resolve, reject) {
+            if (!value || value == undefined) {
+                me.row = {};
+                resolve(me.row);
+                return;
+            }
+            me.open().then(function () {
+                var sql;
+                switch (option) {
+                    case "greater than":
+                        sql = "select " + me.primaryKeyColumn + ", * from " + me.table + " where " + column + " > " + value;
+                        break;
+                    case "less than":
+                        sql = "select " + me.primaryKeyColumn + ", * from " + me.table + " where " + column + " < " + value;
+                        break;
+                    default:
                         sql = "select " + me.primaryKeyColumn + ", * from " + me.table + " where " + column + " = " + value;
                 }
                 return me.sqlite.fetch(sql);

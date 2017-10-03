@@ -263,7 +263,7 @@ export class BaseEntity {
     }
 
     /** Fetch rows from the database and place them in the entities rows array */
-    public fetchRows(fetchOption?: FetchOptions) : Promise<any[]> {
+    public fetchRows(fetchOption?: FetchOptions): Promise<any[]> {
         var me = this;
         return new Promise(function (resolve, reject) {
             if (!fetchOption) fetchOption = {};
@@ -324,7 +324,35 @@ export class BaseEntity {
     /** Fetch a row from the database and place it in the entities row object.
      ** If you leave the column blank it will use the description column;
      */
-    public fetchRowByColumn(value: string, column?: string, option?: "equals" | "like" | "startswith"): Promise<any> {
+    public fetchRowByColumn(value: string, column?: string): Promise<any> {
+        var me = this;
+        if (!column) column = me.descriptionColumn;
+        return new Promise(function (resolve, reject) {
+            if (!value || value == undefined) {
+                me.row = {}
+                resolve(me.row);
+                return;
+            }
+            me.open().then(() => {
+                var sql: string;
+                value = "'" + value.replace(/'/g, "''") + "'";
+                sql = `select ${me.primaryKeyColumn}, * from ${me.table} where ${column} = ${value}`
+                return me.sqlite.fetch(sql);
+            }).then((data) => {
+                me.row = data || {};
+                resolve(me.row);
+            }).catch(function (err) {
+                var error = new Error(`Error fetching row where (${column} = ${value}) from ${me.table}. ${err}`);
+                alert(error.message);
+                reject(error);
+            });
+        });
+    };
+
+    /** Fetch a row from the database and place it in the entities row object.
+ ** If you leave the column blank it will use the description column;
+ */
+    public fetchRowByStringColumn(value: string, column?: string, option?: "equals" | "like" | "startswith"): Promise<any> {
         var me = this;
         if (!column) column = me.descriptionColumn;
         return new Promise(function (resolve, reject) {
@@ -360,6 +388,42 @@ export class BaseEntity {
         });
     };
 
+
+    /** Fetch a row from the database and place it in the entities row object.
+     ** If you leave the column blank it will use the description column;
+     */
+    public fetchRowByNumberColumn(value: number, column?: string, option?: "equals" | "greater than" | "less than"): Promise<any> {
+        var me = this;
+        if (!column) column = me.descriptionColumn;
+        return new Promise(function (resolve, reject) {
+            if (!value || value == undefined) {
+                me.row = {}
+                resolve(me.row);
+                return;
+            }
+            me.open().then(() => {
+                var sql: string;
+                switch (option) {
+                    case "greater than":
+                        sql = `select ${me.primaryKeyColumn}, * from ${me.table} where ${column} > ${value}`
+                        break;
+                    case "less than":
+                        sql = `select ${me.primaryKeyColumn}, * from ${me.table} where ${column} < ${value}`
+                        break;
+                    default:
+                        sql = `select ${me.primaryKeyColumn}, * from ${me.table} where ${column} = ${value}`
+                }
+                return me.sqlite.fetch(sql);
+            }).then((data) => {
+                me.row = data || {};
+                resolve(me.row);
+            }).catch(function (err) {
+                var error = new Error(`Error fetching row where (${column} = ${value}) from ${me.table}. ${err}`);
+                alert(error.message);
+                reject(error);
+            });
+        });
+    };
 
     /** Fetch a row from the database and place it in the entities row object. If you leave the recordid blank it will try use the recordid from the row array */
     public fetchRowBySql(sql: string): Promise<any> {
