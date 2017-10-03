@@ -1,0 +1,28 @@
+{
+    "name": "nicole-sqlite",
+    "version": "1.0.0",
+    "description": "A wrapper for sqlite",
+    "main": "index.js",
+    "author": {
+        "name": "Nicole Orpen",
+        "email": "nicole.orpen@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nicoleza/nicole-sqlite.git"
+    },
+    "license": "MIT",
+    "keywords": [
+        "nativescript sqlite"
+    ],
+    "dependencies": {
+        "nativescript-pro-ui": "3.1.3",
+        "nativescript-sqlite": "1.1.9",
+        "tns-core-modules": "3.2.0"
+    },
+    "readme": "Readme.md",
+    "devDependencies": {
+        "@types/node": "8.0.31",
+        "typescript": "2.5.3"
+    }
+}
