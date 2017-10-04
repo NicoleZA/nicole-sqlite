@@ -507,6 +507,8 @@ var BaseEntity = /** @class */ (function () {
     };
     BaseEntity.prototype.saveRow = function (row) {
         var me = this;
+        if (row)
+            me.row = row;
         if (me.row[me.primaryKeyColumn]) {
             return me.updateRow(row);
         }

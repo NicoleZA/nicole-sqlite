@@ -555,6 +555,7 @@ export class BaseEntity {
 
     public saveRow(row?: object): Promise<any> {
         var me = this;
+        if (row) me.row = row;
         if (me.row[me.primaryKeyColumn]) { //update
             return me.updateRow(row);
         } else {
