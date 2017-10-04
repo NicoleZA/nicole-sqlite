@@ -1,6 +1,6 @@
 {
     "name": "nicole-sqlite",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A wrapper for sqlite",
     "main": "index.js",
     "author": {
@@ -16,13 +16,13 @@
         "nativescript sqlite"
     ],
     "dependencies": {
-        "nativescript-pro-ui": "3.1.3",
+        "nativescript-pro-ui": "3.1.4",
         "nativescript-sqlite": "1.1.9",
         "tns-core-modules": "3.2.0"
     },
     "readme": "Readme.md",
     "devDependencies": {
-        "@types/node": "8.0.31",
+        "@types/node": "8.0.32",
         "typescript": "2.5.3"
     }
 }
