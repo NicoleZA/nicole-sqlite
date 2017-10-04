@@ -16,7 +16,7 @@
         "nativescript sqlite"
     ],
     "dependencies": {
-        "nativescript-pro-ui": "3.1.4",
+        "nativescript-pro-ui": "^3.1.4",
         "nativescript-sqlite": "1.1.9",
         "tns-core-modules": "3.2.0"
     },
