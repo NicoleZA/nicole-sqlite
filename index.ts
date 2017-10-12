@@ -1,5 +1,5 @@
 var sqlite = require("nativescript-sqlite");
-
+import { LoadingIndicator } from 'nativescript-loading-indicator';
 import * as ObservableArrayModule from 'data/observable-array';
 import * as listViewModule from 'nativescript-pro-ui/listview';
 
@@ -183,6 +183,8 @@ export class Sqlite {
 
 export class BaseEntity {
 
+    public loadingIndicator = new LoadingIndicator();
+    
     private sqlite: Sqlite;
     private dbname = "messenger.db";
     private isOpen = false;

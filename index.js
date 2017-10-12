@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var sqlite = require("nativescript-sqlite");
+var nativescript_loading_indicator_1 = require("nativescript-loading-indicator");
 var ListViewLoadOnDemandMode;
 (function (ListViewLoadOnDemandMode) {
     /**Load on demand is disabled. */
@@ -125,6 +126,7 @@ var Sqlite = /** @class */ (function () {
 exports.Sqlite = Sqlite;
 var BaseEntity = /** @class */ (function () {
     function BaseEntity(dbname) {
+        this.loadingIndicator = new nativescript_loading_indicator_1.LoadingIndicator();
         this.dbname = "messenger.db";
         this.isOpen = false;
         /** The name of the primary key column in the database */
