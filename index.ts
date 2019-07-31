@@ -1,5 +1,4 @@
 var sqlite = require("nativescript-sqlite");
-//import { LoadingIndicator } from '@nstudio/nativescript-loading-indicator';
 import * as listViewModule from 'nativescript-ui-listview';
 
 export enum database {
@@ -172,8 +171,6 @@ export class Sqlite {
 }
 
 export class BaseEntity {
-
-//    public loadingIndicator = new LoadingIndicator();
 
     private sqlite: Sqlite;
     private dbname = "messenger.db";

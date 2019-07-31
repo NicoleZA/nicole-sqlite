@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var sqlite = require("nativescript-sqlite");
-//import { LoadingIndicator } from '@nstudio/nativescript-loading-indicator';
 var listViewModule = require("nativescript-ui-listview");
 var database;
 (function (database) {
