@@ -1,15 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var sqlite = require("nativescript-sqlite");
-var ListViewLoadOnDemandMode;
-(function (ListViewLoadOnDemandMode) {
-    /**Load on demand is disabled. */
-    ListViewLoadOnDemandMode[ListViewLoadOnDemandMode["None"] = 0] = "None";
-    /** A special load-on-demand item is appended at the end of the scrollable list which, when clicked initiates a request for more items. */
-    ListViewLoadOnDemandMode[ListViewLoadOnDemandMode["Manual"] = 1] = "Manual";
-    /** A request for more items will automatically be initiated after the user approaches the end of the scrollable list. */
-    ListViewLoadOnDemandMode[ListViewLoadOnDemandMode["Auto"] = 2] = "Auto";
-})(ListViewLoadOnDemandMode = exports.ListViewLoadOnDemandMode || (exports.ListViewLoadOnDemandMode = {}));
+//import { LoadingIndicator } from '@nstudio/nativescript-loading-indicator';
+var listViewModule = require("nativescript-ui-listview");
 var database;
 (function (database) {
     database[database["ResultsAsArray"] = 1] = "ResultsAsArray";
@@ -467,15 +460,15 @@ var BaseEntity = /** @class */ (function () {
                     listView.items.splice(0);
                 listView.items.push.apply(listView.items, data);
                 listView.loadOnDemandMode = me.eof
-                    ? ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.None]
-                    : ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.Auto];
+                    ? listViewModule.ListViewLoadOnDemandMode.None
+                    : listViewModule.ListViewLoadOnDemandMode.Auto;
                 if (fetchOption.action == "Refresh" || fetchOption.action == "LoadPrevious")
                     listView.notifyPullToRefreshFinished();
                 if (fetchOption.action == "LoadMore")
                     listView.notifyLoadOnDemandFinished();
                 resolve(data);
             }).catch(function (err) {
-                listView.loadOnDemandMode = ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.None];
+                listView.loadOnDemandMode = listViewModule.ListViewLoadOnDemandMode.None;
                 if (fetchOption.action == "Refresh" || fetchOption.action == "LoadPrevious")
                     listView.notifyPullToRefreshFinished();
                 if (fetchOption.action == "LoadMore")
@@ -496,8 +489,8 @@ var BaseEntity = /** @class */ (function () {
                 listView.items.splice(0);
             listView.items.push.apply(listView.items, data);
             listView.loadOnDemandMode = me.eof
-                ? ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.None]
-                : ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.Auto];
+                ? listViewModule.ListViewLoadOnDemandMode.None
+                : listViewModule.ListViewLoadOnDemandMode.Auto;
             if (fetchOption.action == "Refresh" || fetchOption.action == "LoadPrevious")
                 listView.notifyPullToRefreshFinished();
             if (fetchOption.action == "LoadMore")
@@ -509,7 +502,7 @@ var BaseEntity = /** @class */ (function () {
         var me = this;
         if (row)
             me.row = row;
-        if (me.row[me.primaryKeyColumn]) {
+        if (me.row[me.primaryKeyColumn]) { //update
             return me.updateRow(row);
         }
         else {

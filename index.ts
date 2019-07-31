@@ -1,16 +1,6 @@
 var sqlite = require("nativescript-sqlite");
-
-import * as ObservableArrayModule from 'data/observable-array';
-import * as listViewModule from 'nativescript-pro-ui/listview';
-
-export enum ListViewLoadOnDemandMode {
-    /**Load on demand is disabled. */
-    None,
-    /** A special load-on-demand item is appended at the end of the scrollable list which, when clicked initiates a request for more items. */
-    Manual,
-    /** A request for more items will automatically be initiated after the user approaches the end of the scrollable list. */
-    Auto
-}
+//import { LoadingIndicator } from '@nstudio/nativescript-loading-indicator';
+import * as listViewModule from 'nativescript-ui-listview';
 
 export enum database {
     ResultsAsArray = 1,
@@ -182,6 +172,8 @@ export class Sqlite {
 }
 
 export class BaseEntity {
+
+//    public loadingIndicator = new LoadingIndicator();
 
     private sqlite: Sqlite;
     private dbname = "messenger.db";
@@ -520,13 +512,13 @@ export class BaseEntity {
                 if (fetchOption.action == "Refresh") listView.items.splice(0);
                 listView.items.push.apply(listView.items, data);
                 listView.loadOnDemandMode = me.eof
-                    ? ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.None]
-                    : ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.Auto];
+                ? listViewModule.ListViewLoadOnDemandMode.None
+                : listViewModule.ListViewLoadOnDemandMode.Auto;
                 if (fetchOption.action == "Refresh" || fetchOption.action == "LoadPrevious") listView.notifyPullToRefreshFinished();
                 if (fetchOption.action == "LoadMore") listView.notifyLoadOnDemandFinished();
                 resolve(data);
             }).catch(function (err) {
-                listView.loadOnDemandMode = ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.None]
+                listView.loadOnDemandMode = listViewModule.ListViewLoadOnDemandMode.None
                 if (fetchOption.action == "Refresh" || fetchOption.action == "LoadPrevious") listView.notifyPullToRefreshFinished();
                 if (fetchOption.action == "LoadMore") listView.notifyLoadOnDemandFinished();
                 alert(err.message);
@@ -544,8 +536,8 @@ export class BaseEntity {
             if (fetchOption.action == "Refresh") listView.items.splice(0);
             listView.items.push.apply(listView.items, data);
             listView.loadOnDemandMode = me.eof
-                ? ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.None]
-                : ListViewLoadOnDemandMode[ListViewLoadOnDemandMode.Auto];
+                ? listViewModule.ListViewLoadOnDemandMode.None
+                : listViewModule.ListViewLoadOnDemandMode.Auto;
             if (fetchOption.action == "Refresh" || fetchOption.action == "LoadPrevious") listView.notifyPullToRefreshFinished();
             if (fetchOption.action == "LoadMore") listView.notifyLoadOnDemandFinished();
             resolve(data);
